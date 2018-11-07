@@ -1,0 +1,40 @@
+{
+  "name": "goto-next-event-api",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node index.js",
+    "start:watch": "nodemon",
+    "prestart:prod": "tsc",
+    "start:prod": "node dist/main.js"
+  },
+  "now": {
+    "name": "goto-next-event-api",
+    "alias": "goto-next-event-api",
+    "env": {
+      "NODE_ENV": "production",
+      "GOOGLE_API_KEY": "@google_api_key"
+    }
+  },
+  "dependencies": {
+    "@nestjs/common": "^4.5.9",
+    "@nestjs/core": "^4.5.10",
+    "@nestjs/microservices": "^4.5.8",
+    "@nestjs/testing": "^4.5.5",
+    "@nestjs/websockets": "^4.5.8",
+    "@types/node": "^9.3.0",
+    "axios": "^0.17.1",
+    "dotenv": "^6.1.0",
+    "moment-timezone": "^0.5.23",
+    "reflect-metadata": "0.1.10",
+    "rxjs": "^5.5.6",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "nodemon": "^1.14.1"
+  }
+}
