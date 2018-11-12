@@ -1,4 +1,4 @@
-import { GeoLocation } from "../geo-location.entities";
+import { GeoLocation } from '../geo-location.entities';
 
 export interface IcalElement { }
 

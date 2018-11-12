@@ -5,6 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "lint": "tsc && tslint -c tslint.json 'src/**/*.ts'",
+    "test": "nyc -e .ts -x \"src/**/*.spec.ts\" jasmine-ts src/**/*.spec.ts",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "start": "node index.js",
     "start:watch": "nodemon",
     "prestart:prod": "tsc",
@@ -35,6 +38,11 @@
   },
   "devDependencies": {
     "@types/dotenv": "^4.0.3",
-    "nodemon": "^1.14.1"
+    "@types/jasmine": "^2.8.11",
+    "jasmine": "^3.3.0",
+    "jasmine-ts": "^0.3.0",
+    "nodemon": "^1.14.1",
+    "nyc": "^13.1.0",
+    "tslint": "^5.11.0"
   }
 }

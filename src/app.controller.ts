@@ -17,10 +17,10 @@ export class AppController {
 
   @Post()
   public async getBestConnection(@Body() body: { calendarIds: string[], sourceLocation: GeoLocation, limit: number }): Promise<NextEventWithConnection[]> {
-    let icalStrings = await Promise.all(body.calendarIds.map(async id => await this.icloudService.getIcalString(id)));
-    let calendars = icalStrings.map(s => this.icalParserService.parse(s)).reduce((pv, cv) => pv.concat(cv), []);
-    let coloredEvents = this.getColoredEvents(calendars, body.limit);
-    let coloredEventsWithConnections = await this.getColoredEventsWithConnections(coloredEvents, body.sourceLocation);
+    const icalStrings = await Promise.all(body.calendarIds.map(async id => await this.icloudService.getIcalString(id)));
+    const calendars = icalStrings.map(s => this.icalParserService.parse(s)).reduce((pv, cv) => pv.concat(cv), []);
+    const coloredEvents = this.getColoredEvents(calendars, body.limit);
+    const coloredEventsWithConnections = await this.getColoredEventsWithConnections(coloredEvents, body.sourceLocation);
     return coloredEventsWithConnections;
   }
 
@@ -40,7 +40,7 @@ export class AppController {
         const eventLocation = coloredEvent.event.locationLines.join(', ');
         coloredEvent.event.geoLocation = await this.googleGeocodingService.getCoordinates(eventLocation);
       }
-      let connection = await this.transportService.getBestConnection(sourceLocation, coloredEvent.event.geoLocation, coloredEvent.event.startTimestamp);
+      const connection = await this.transportService.getBestConnection(sourceLocation, coloredEvent.event.geoLocation, coloredEvent.event.startTimestamp);
       return new NextEventWithConnection(coloredEvent, connection);
     }));
   }

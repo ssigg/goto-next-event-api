@@ -35,11 +35,11 @@ export class IcalCalendarParser implements IcalElementParserInterface {
 
     parseLineAndReturnCompleteness(line: string): boolean {
         if (line.startsWith('X-WR-CALNAME')) {
-            var parts = line.split(':');
+            const parts = line.split(':');
             this.calendar.name = parts[parts.length - 1];
         }
         if (line.startsWith('X-APPLE-CALENDAR-COLOR')) {
-            var parts = line.split(':');
+            const parts = line.split(':');
             this.calendar.color = parts[parts.length - 1].substr(0, 7);
         }
         return this.isMyEndLine(line);
@@ -78,46 +78,46 @@ export class IcalEventParser implements IcalElementParserInterface {
 
     parseLineAndReturnCompleteness(line: string): boolean {
         if (line.startsWith('LOCATION')) {
-            var parts = line.split(':');
+            const parts = line.split(':');
             this.event.locationLines = parts[parts.length - 1]
                 .split('\\n')
                 .map(l => this.sanitizeString(l))
-                .filter(l => l != '');
+                .filter(l => l !== '');
         } else if (line.startsWith('SUMMARY')) {
-            var parts = line.split('SUMMARY:');
+            const parts = line.split('SUMMARY:');
             this.event.summary = this.sanitizeString(parts[parts.length - 1]);
         } else if (line.startsWith('DTSTART')) {
-            var parts = line.split(':');
-            let stringValue = parts[parts.length - 1];
-            if (stringValue.indexOf('T') != -1) {
-                let stringValueWithoutSeconds = stringValue.substr(0, 13);
-                let timeZone = parts[0].split('TZID=')[1];
+            const parts = line.split(':');
+            const stringValue = parts[parts.length - 1];
+            if (stringValue.indexOf('T') !== -1) {
+                const stringValueWithoutSeconds = stringValue.substr(0, 13);
+                const timeZone = parts[0].split('TZID=')[1];
                 this.event.startTimestamp = moment.tz(stringValueWithoutSeconds, timeZone).toDate().valueOf();
             } else {
-                let year: number = parseInt(stringValue.substr(0, 4));
-                let month: number = parseInt(stringValue.substr(4, 2)) - 1;
-                let day: number = parseInt(stringValue.substr(6, 2));
+                const year: number = parseInt(stringValue.substr(0, 4), 10);
+                const month: number = parseInt(stringValue.substr(4, 2), 10) - 1;
+                const day: number = parseInt(stringValue.substr(6, 2), 10);
                 this.event.startTimestamp = new Date(year, month, day).valueOf();
             }
         } else if (line.startsWith('DTEND')) {
-            var parts = line.split(':');
-            let stringValue = parts[parts.length - 1];
-            if (stringValue.indexOf('T') != -1) {
-                let stringValueWithoutSeconds = stringValue.substr(0, 13);
-                let timeZone = parts[0].split('TZID=')[1];
+            const parts = line.split(':');
+            const stringValue = parts[parts.length - 1];
+            if (stringValue.indexOf('T') !== -1) {
+                const stringValueWithoutSeconds = stringValue.substr(0, 13);
+                const timeZone = parts[0].split('TZID=')[1];
                 this.event.endTimestamp = moment.tz(stringValueWithoutSeconds, timeZone).toDate().valueOf();
             } else {
-                let year: number = parseInt(stringValue.substr(0, 4));
-                let month: number = parseInt(stringValue.substr(4, 2)) - 1;
-                let day: number = parseInt(stringValue.substr(6, 2));
+                const year: number = parseInt(stringValue.substr(0, 4), 10);
+                const month: number = parseInt(stringValue.substr(4, 2), 10) - 1;
+                const day: number = parseInt(stringValue.substr(6, 2), 10);
                 this.event.endTimestamp = new Date(year, month, day).valueOf();
             }
-        } else if (line.indexOf('geo:') != -1) {
-            let parts = line.split('geo:');
-            let stringValue = parts[parts.length - 1];
-            let geoParts = stringValue.split(',');
-            let latitude = parseFloat(geoParts[0]);
-            let longitude = parseFloat(geoParts[1]);
+        } else if (line.indexOf('geo:') !== -1) {
+            const parts = line.split('geo:');
+            const stringValue = parts[parts.length - 1];
+            const geoParts = stringValue.split(',');
+            const latitude = parseFloat(geoParts[0]);
+            const longitude = parseFloat(geoParts[1]);
             this.event.geoLocation = new GeoLocation();
             this.event.geoLocation.lat = latitude;
             this.event.geoLocation.lng = longitude;

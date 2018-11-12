@@ -5,13 +5,13 @@ import { IcalElementParserFactoryInterface, IcalCalendarParserFactory, IcalEvent
 @Component()
 export class IcalParserService {
     public parse(icalString: string): IcalCalendar[] {
-        let parserFactories = [
+        const parserFactories = [
             new IcalCalendarParserFactory(),
             new IcalEventParserFactory()
         ] as IcalElementParserFactoryInterface[];
 
-        let lines = icalString.split('\n');
-        let joinedLines: string[] = [];
+        const lines = icalString.split('\n');
+        const joinedLines: string[] = [];
         lines.map(line => {
             if (line.startsWith(' ') || line.startsWith('"')) {
                 joinedLines[joinedLines.length - 1] = joinedLines[joinedLines.length - 1] + line.trim();
@@ -20,16 +20,16 @@ export class IcalParserService {
             }
         });
 
-        let rootElement = new IcalRoot();
+        const rootElement = new IcalRoot();
 
         let activeParser: IcalElementParserInterface;
-        let parentParserStack: IcalElementParserInterface[] = [];
+        const parentParserStack: IcalElementParserInterface[] = [];
 
         let activeElement: IcalElement = rootElement;
 
-        for (let index in joinedLines) {
-            let line = joinedLines[index];
-            let newParser = parserFactories.map(f => f.create(line, activeElement)).find(f => f != null);
+        for (const index in joinedLines) {
+            const line = joinedLines[index];
+            const newParser = parserFactories.map(f => f.create(line, activeElement)).find(f => f != null);
             if (newParser != null) {
                 parentParserStack.push(activeParser);
                 activeParser = newParser;
