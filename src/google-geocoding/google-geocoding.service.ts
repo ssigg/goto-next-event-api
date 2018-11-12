@@ -12,7 +12,7 @@ export class GoogleGeocodingService {
 
     public async getCoordinates(address: string): Promise<GeoLocation> {
         let googleApiKey = process.env.GOOGLE_API_KEY;
-        let googleGeoCodingUrl = 'geocode/json?key=' + googleApiKey + '&address=' + address;
+        let googleGeoCodingUrl = 'geocode/json?key=' + googleApiKey + '&address=' + encodeURIComponent(address);
         let geoCodeResponse = await this.client.get<GoogleGeocodeResponse>(googleGeoCodingUrl);
         return geoCodeResponse.data.results[0].geometry.location;
     }

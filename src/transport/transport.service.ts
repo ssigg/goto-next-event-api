@@ -27,9 +27,9 @@ export class TransportService {
     }
 
     private async getConnections(start: TransportEndPoint, end: TransportEndPoint, arrivalTimestamp: number): Promise<TransportConnection[]> {
-        let arrivalDate = moment(arrivalTimestamp).tz('Europe/Zurich').toDate();
-        let arrivalDateString = arrivalDate.getFullYear() + '-' + (arrivalDate.getMonth() + 1) + '-' + arrivalDate.getDate();
-        let arrivalTimeString = arrivalDate.getHours() + ':' + arrivalDate.getMinutes();
+        let arrivalTime = moment(arrivalTimestamp).tz('Europe/Zurich');
+        let arrivalDateString = arrivalTime.format('YYYY-MM-DD');
+        let arrivalTimeString = arrivalTime.format('HH:mm');
         let query = 'from=' + start.name + '&to=' + end.name + '&date=' + arrivalDateString + '&time=' + arrivalTimeString + '&isArrivalTime=1';
         let connectionListResponse = await this.client.get<TransportConnectionList>('connections?' + query);
         return connectionListResponse.data.connections;
@@ -54,8 +54,7 @@ export class TransportService {
     }
 
     private parseTimeString(dateString: string): number {
-        let dateTimeParts = dateString.split(/[^0-9]/).map(p => parseInt(p));
-        let timestamp = new Date(dateTimeParts[0], dateTimeParts[1] - 1, dateTimeParts[2], dateTimeParts[3], dateTimeParts[4], dateTimeParts[5]).valueOf();
+        let timestamp = moment.tz(dateString).toDate().valueOf();
         return timestamp;
     }
 }

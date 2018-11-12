@@ -18,7 +18,7 @@ export class AppController {
   @Post()
   public async getBestConnection(@Body() body: { calendarIds: string[], sourceLocation: GeoLocation, limit: number }): Promise<NextEventWithConnection[]> {
     let icalStrings = await Promise.all(body.calendarIds.map(async id => await this.icloudService.getIcalString(id)));
-    let calendars = icalStrings.map(s => this.icalParserService.parse(s)).reduce((pv, cv, ci, a) => pv.concat(cv), []);
+    let calendars = icalStrings.map(s => this.icalParserService.parse(s)).reduce((pv, cv) => pv.concat(cv), []);
     let coloredEvents = this.getColoredEvents(calendars, body.limit);
     let coloredEventsWithConnections = await this.getColoredEventsWithConnections(coloredEvents, body.sourceLocation);
     return coloredEventsWithConnections;
@@ -27,7 +27,7 @@ export class AppController {
   private getColoredEvents(calendars: IcalCalendar[], limit: number): ColoredIcalEvent[] {
     return calendars
       .map(c => c.events.map(e => new ColoredIcalEvent(c.color, e)))
-      .reduce((pv, cv, ci, a) => pv.concat(cv))
+      .reduce((pv, cv) => pv.concat(cv))
       .filter(e => e.event.startTimestamp > Date.now())
       .filter(e => e.event.geoLocation !== undefined || e.event.locationLines !== undefined)
       .sort((a, b) => a.event.startTimestamp - b.event.startTimestamp > 0 ? 1 : -1)
