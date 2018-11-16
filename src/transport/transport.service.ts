@@ -54,7 +54,7 @@ export class TransportService {
     }
 
     private parseTimeString(dateString: string): number {
-        const timestamp = moment.tz(dateString).toDate().valueOf();
+        const timestamp = moment.tz(dateString, 'Europe/Zurich').toDate().valueOf();
         return timestamp;
     }
 }
