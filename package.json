@@ -6,12 +6,11 @@
   "scripts": {
     "build": "tsc",
     "lint": "tsc && tslint -c tslint.json 'src/**/*.ts'",
-    "test": "nyc -e .ts -x \"src/**/*.spec.ts\" jasmine-ts src/**/*.spec.ts",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "start": "node index.js",
+    "test": "tsc && nyc -e .ts -x \"src/**/*.spec.ts\" jasmine-ts src/**/*.spec.ts",
+    "coverage": "nyc report --reporter=text-lcov",
+    "start": "node dist/main.js",
     "start:watch": "nodemon",
-    "prestart:prod": "tsc",
-    "start:prod": "node dist/main.js"
+    "prestart:prod": "tsc"
   },
   "now": {
     "name": "goto-next-event-api",
