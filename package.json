@@ -18,6 +18,12 @@
     "env": {
       "NODE_ENV": "production",
       "GOOGLE_API_KEY": "@google_api_key"
+    },
+    "scale": {
+      "bru1": {
+        "min": 1,
+        "max": "auto"
+      }
     }
   },
   "dependencies": {
